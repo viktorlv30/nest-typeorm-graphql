@@ -1,0 +1,26 @@
+version: '3.5'
+
+services:
+  api:
+    image: test:0.0.1
+    build: .
+    ports:
+      - 5000:3000
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:latest
+    ports:
+      - 6000:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: graphql
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+    volumes:
+      - ./mysql-data:/var/lib/mysql
