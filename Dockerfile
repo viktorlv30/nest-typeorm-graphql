@@ -9,4 +9,4 @@ RUN apt-get update \
 
 EXPOSE 4999
 
-CMD ["npm", "run", "start"]
+CMD ["npm", "run", "start:prod"]

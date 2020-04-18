@@ -2,7 +2,8 @@ version: '3.5'
 
 services:
     api:
-        restart: always
+        restart: on-failure
+        image: api:latest
         container_name: api
         environment:
             PORT: 4999
@@ -17,7 +18,7 @@ services:
     mysql:
         image: mysql:latest
         command: --default-authentication-plugin=mysql_native_password
-        restart: always
+        restart: on-failure
         container_name: mysql
         ports:
             - 6000:3306

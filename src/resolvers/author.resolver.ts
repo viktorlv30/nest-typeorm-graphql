@@ -1,14 +1,17 @@
-import { /*Args, Mutation, Query,*/ Resolver } from '@nestjs/graphql';
-import RepoService from '../../src/repo.service';
-// import Author from 'src/db/models/author.entity';
+import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import RepoService from 'src/repo.service';
+import Author from 'src/db/models/author.entity';
 // import AuthorInput from './input/author.input';
 
 @Resolver()
 class AuthorResolver {
 	constructor(private readonly repoService: RepoService) {}
 
-	// @Query(() => Author, { nullable: true })
-	// public async getAuthor(@Args('id') id: number): Promise<Author> {
+	// @Query(() => Author, {
+	// 	nullable: true,
+	// 	description: 'Returns an Author by id',
+	// })
+	// public async getAuthor(@Args('id') id: number) {
 	// 	return this.repoService.authorRepo.findOne(id);
 	// }
 

@@ -1,6 +1,6 @@
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
-import RepoService from '../../src/repo.service';
-import Book from '../../src/db/models/book.entity';
+import RepoService from 'src/repo.service';
+import Book from 'src/db/models/book.entity';
 import BookInput from './input/book.input';
 import { Raw } from 'typeorm';
 
