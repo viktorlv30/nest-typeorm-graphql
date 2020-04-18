@@ -7,13 +7,10 @@ import Author from 'src/db/models/author.entity';
 class AuthorResolver {
 	constructor(private readonly repoService: RepoService) {}
 
-	// @Query(() => Author, {
-	// 	nullable: true,
-	// 	description: 'Returns an Author by id',
-	// })
-	// public async getAuthor(@Args('id') id: number) {
-	// 	return this.repoService.authorRepo.findOne(id);
-	// }
+	@Query(returns => Author)
+	public async getAuthor(@Args('id') id: number) {
+		return this.repoService.authorRepo.findOne(id);
+	}
 
 	// @Query(() => [Author])
 	// public async getAuthors(
