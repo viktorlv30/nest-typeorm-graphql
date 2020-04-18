@@ -4,6 +4,7 @@ import {
 	Column,
 	ManyToMany,
 	JoinTable,
+	RelationCount,
 } from 'typeorm';
 import Author from './author.entity';
 import { Field, ObjectType, ID } from 'type-graphql';
@@ -19,13 +20,19 @@ export default class Book {
 	@Column()
 	title: string;
 
+	@Field(() => [Author], { nullable: true })
+	authors: Author[];
+
 	// Associations
 
 	@ManyToMany(
 		type => Author,
-		author => author.books,
+		author => author.booksRelation,
 		{ primary: true },
 	)
 	@JoinTable()
-	authors: Author[];
+	authorsRelation: Author[];
+
+	@RelationCount((book: Book) => book.authorsRelation)
+	authorCount: number;
 }

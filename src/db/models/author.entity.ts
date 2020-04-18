@@ -1,4 +1,10 @@
-import { Column, Entity, PrimaryGeneratedColumn, ManyToMany } from 'typeorm';
+import {
+	Column,
+	Entity,
+	PrimaryGeneratedColumn,
+	ManyToMany,
+	RelationCount,
+} from 'typeorm';
 import Book from './book.entity';
 import { ObjectType, Field, ID } from 'type-graphql';
 
@@ -17,12 +23,18 @@ export default class Author {
 	@Column({ name: 'last_name' })
 	lastName: string;
 
+	@Field(() => [Book], { nullable: true })
+	books: Book[];
+
 	// Associations
 
 	@ManyToMany(
 		type => Book,
-		book => book.authors,
+		book => book.authorsRelation,
 		{ cascade: true },
 	)
-	books: Book[];
+	booksRelation: Book[];
+
+	@RelationCount((author: Author) => author.booksRelation)
+	bookCount: number;
 }

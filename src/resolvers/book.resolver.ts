@@ -1,35 +1,32 @@
-import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver } from '@nestjs/graphql';
 import RepoService from 'src/repo.service';
 import Book from 'src/db/models/book.entity';
-import BookInput from './input/book.input';
 import { Raw } from 'typeorm';
 
 @Resolver(Book)
 class BookResolver {
 	constructor(private readonly repoService: RepoService) {}
 
-	// @Query(() => Book, { nullable: true })
-	// public async getBook(@Args('id') id: number): Promise<Book> {
-	// 	return this.repoService.bookRepo.findOne(id);
-	// }
+	@Query(returns => Book, {
+		nullable: true,
+		description: 'Find a book by id.`',
+	})
+	public getBook(@Args('id') id: number): Promise<Book> {
+		return this.repoService.bookRepo.findOne(id);
+	}
 
-	/**
-	 * Case insensitive
-	 * Supports 'like' syntax
-	 * Without parameter - returns all the books
-	 * With 'title: Art of %' - returns all books which names start with 'Art of'
-	 * @param title
-	 */
-	// @Query(() => [Book])
-	// public async getBooks(
-	// 	@Args('title') title: string = null,
-	// ): Promise<Book[]> {
-	// 	return this.repoService.bookRepo.find({
-	// 		where: {
-	// 			title: Raw(alias => `${alias} ILIKE '%${title}%'`),
-	// 		},
-	// 	});
-	// }
+	@Query(() => [Book], {
+		description: `1. Case insensitive\n2. Supports 'like' syntax\n3. Without parameter - returns all the books\n4. With 'title: Art of %' - returns all books which names start with 'Art of'`,
+	})
+	public async getBooks(
+		@Args('title') title: string = null,
+	): Promise<Book[]> {
+		return this.repoService.bookRepo.find({
+			where: {
+				title: Raw(alias => `${alias} ILIKE '%${title}%'`),
+			},
+		});
+	}
 
 	// @Mutation(() => Book)
 	// public async createBook(@Args('data') input: BookInput): Promise<Book> {
