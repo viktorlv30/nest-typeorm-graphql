@@ -1,26 +1,31 @@
 version: '3.5'
 
 services:
-  api:
-    image: test:0.0.1
-    build: .
-    ports:
-      - 5000:3000
-    depends_on:
-      - mysql
+    api:
+        container_name: api
+        environment:
+            PORT: 4999
+        build: .
+        ports:
+            - 5000:4999
+        depends_on:
+            - mysql
+        links:
+            - 'mysql:dbhost'
 
-  mysql:
-    image: mysql:latest
-    ports:
-      - 6000:3306
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: graphql
-      MYSQL_USER: user
-      MYSQL_PASSWORD: password
-    healthcheck:
-      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
-      timeout: 20s
-      retries: 10
-    volumes:
-      - ./mysql-data:/var/lib/mysql
+    mysql:
+        image: mysql:5.7.29
+        container_name: mysql
+        ports:
+            - 6000:3306
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: graphql
+            MYSQL_USER: user
+            MYSQL_PASSWORD: password
+        healthcheck:
+            test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+            timeout: 20s
+            retries: 10
+        volumes:
+            - ./mysql-data:/var/lib/mysql
