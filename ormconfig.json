@@ -1,0 +1,12 @@
+{
+	"type": "mysql",
+	"port": 6000,
+	"host": "localhost",
+	"logging": true,
+	"username": "user",
+	"password": "password",
+	"database": "graphql",
+	"entities": ["src/**/*.entity.ts"],
+	"synchronize": true,
+	"debug": false
+}

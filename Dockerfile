@@ -5,11 +5,8 @@ WORKDIR /opt/api-service
 COPY . .
 
 RUN apt-get update \
-    && npm install \
-    && npm run build \
-    && npm prune --production \
-    && rm -rf ./src
+    && npm install --only=production
 
-EXPOSE 3000
+EXPOSE 4999
 
-CMD npm run start:prod
+CMD ["npm", "run", "start"]
