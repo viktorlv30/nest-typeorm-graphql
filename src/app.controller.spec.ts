@@ -9,16 +9,7 @@ describe('AppController', () => {
 
 	beforeEach(async () => {
 		const app: TestingModule = await Test.createTestingModule({
-			imports: [
-				TypeOrmModule.forRoot(),
-				RepoModule,
-				// ...graphQLImports,
-				// GraphQLModule.forRoot({
-				// 	autoSchemaFile: 'schema.graphql',
-				// 	playground: true,
-				// 	debug: true,
-				// }),
-			],
+			imports: [TypeOrmModule.forRoot(), RepoModule],
 			controllers: [AppController],
 			providers: [AppService],
 		}).compile();
