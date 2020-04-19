@@ -1,0 +1,72 @@
+
+mutation {
+  createAuthor(author: {firstName:"Cert",lastName:"KTR"}){
+    id,
+    firstName,
+    lastName
+  }
+  
+  createBook(book: {title:"Hello world",authorIds:[3]}){
+    id,
+    title
+  }
+  
+  addAuthor(authorId: 5, bookId: 3){
+    id,
+    title
+  }
+  
+  deleteAuthor(id: 7)
+  
+  deleteBook(id: 7)
+  
+  deleteAuthorWithBooks(id: 11) 
+}
+
+query {
+  getAuthor(id: 2){
+    firstName,
+    lastName,
+    books{
+      id
+    }
+  }
+
+  getAuthors(minNumberOfBooks:2, maxNumberOfBooks:3){
+    id,
+    firstName,
+    lastName
+  }
+
+  getAuthors(minNumberOfBooks:3){
+    id,
+    firstName,
+    lastName
+  }
+  
+  getAuthors(maxNumberOfBooks:3){
+    id,
+    firstName,
+    lastName
+  }
+  
+  getAuthors {
+    id,
+    lastName
+  }
+
+  getBook(id: 2){
+    id,
+    title
+  }
+
+  getBooks {
+    title,
+    id
+  }
+
+  getBooks(title: " %  \nWORLD \n%   \n") {
+    title,
+    id
+  }
+}
