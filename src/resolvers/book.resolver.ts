@@ -5,6 +5,7 @@ import { Raw } from 'typeorm';
 import { BooksSearch, DEFAULT_BOOKS_SEARCH } from './input/books.search.arg';
 import { prepareLikeQueryString } from 'src/helpers/books.query.helper';
 import BookInput from './input/book.input';
+import { AuthorAdd } from './input/add.author.arg';
 
 @Resolver(Book)
 class BookResolver {
@@ -49,14 +50,21 @@ class BookResolver {
 		return this.repoService.bookRepo.save(newBook);
 	}
 
-	// @Mutation(() => Book)
-	// public async addAuthor(
-	// 	@Args('bookId') bookId: number,
-	// 	@Args('authorId') authorId: number,
-	// ): Promise<Book> {
+	@Mutation(() => Book)
+	public async addAuthor(
+		@Args() { authorId, bookId }: AuthorAdd,
+	): Promise<Book> {
+		const book = await this.repoService.bookRepo.findOne(bookId, {
+			relations: ['authorsRelation'],
+		});
+		const author = await this.repoService.authorRepo.findOne(authorId);
+		if (!(book.authorsRelation instanceof Array)) {
+			book.authorsRelation = [];
+		}
+		book.authorsRelation.push(author);
 
-	// 	return this.repoService.bookRepo.addAuthor(bookId, authorId);
-	// }
+		return this.repoService.bookRepo.save(book);
+	}
 
 	// @Mutation(() => Book)
 	// public async deleteAuthorWithBooks(

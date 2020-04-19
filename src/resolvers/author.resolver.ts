@@ -43,6 +43,7 @@ class AuthorResolver {
 			firstName,
 			lastName,
 		});
+
 		return this.repoService.authorRepo.save(author);
 	}
 
