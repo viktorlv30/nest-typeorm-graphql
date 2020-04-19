@@ -49,6 +49,9 @@ ts-node ./node_modules/typeorm/cli.js migration:revert
 # Run docker container manually for dev
 docker run --name mysql -v C:/Users/Viktor_Litvak/projects/nest-typeorm-graphql/mysql-data:/var/lib/mysql -p 6000:3306 -e MYSQL_USER=user -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=graphql mysql:5.7.29 --default-authentication-plugin=mysql_native_password
 
+# Stop local Mysql server in docker and remove database with all data
+docker rm -vf mysql api; rm -vrf mysql-data/* 
+
 # Enter into docker container
 winpty docker exec -ti mysql bash
 
