@@ -13,12 +13,12 @@ const graphQLImports = [AuthorResolver, BookResolver];
 	imports: [
 		TypeOrmModule.forRoot(),
 		RepoModule,
-		// ...graphQLImports,
-		// GraphQLModule.forRoot({
-		// 	autoSchemaFile: 'schema.graphql',
-		// 	playground: true,
-		// 	debug: true,
-		// }),
+		...graphQLImports,
+		GraphQLModule.forRoot({
+			autoSchemaFile: 'schema.graphql',
+			playground: true,
+			debug: true,
+		}),
 	],
 	controllers: [AppController],
 	providers: [AppService],

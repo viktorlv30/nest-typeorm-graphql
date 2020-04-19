@@ -6,7 +6,7 @@
 	"username": "user",
 	"password": "password",
 	"database": "graphql",
-	"entities": ["src/**/*.entity.ts"],
+	"entities": ["dist/**/*.entity.js"],
 	"synchronize": true,
 	"debug": false
 }

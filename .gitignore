@@ -28,3 +28,6 @@ npm-debug.log*
 
 # Mysql
 mysql-data/*
+
+# Schema
+*.graphql
