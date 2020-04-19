@@ -18,6 +18,7 @@ const graphQLImports = [AuthorResolver, BookResolver];
 			autoSchemaFile: 'schema.graphql',
 			playground: true,
 			debug: true,
+			path: '/',
 		}),
 	],
 	controllers: [AppController],
