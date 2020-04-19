@@ -3,6 +3,7 @@ import RepoService from 'src/repo.service';
 import Author from 'src/db/models/author.entity';
 import { AuthorsSearch } from './input/authors.search.arg';
 import AuthorInput from './input/author.input';
+import { Int } from 'type-graphql';
 
 @Resolver(Author)
 class AuthorResolver {
@@ -47,10 +48,12 @@ class AuthorResolver {
 		return this.repoService.authorRepo.save(author);
 	}
 
-	// @Mutation(() => Author)
-	// public async deleteAuthor(@Args('data') input: number): Promise<number> {
-	// 	return this.repoService.authorRepo.deleteOneById(input);
-	// }
+	@Mutation(() => Int)
+	public async deleteAuthor(@Args('id') id: number): Promise<number> {
+		const deleteResult = await this.repoService.authorRepo.delete(id);
+
+		return deleteResult.affected;
+	}
 }
 
 export default AuthorResolver;
