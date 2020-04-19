@@ -31,7 +31,6 @@ class BookResolver {
 		}
 
 		const searchQuery = prepareLikeQueryString(title);
-		console.log('searchQuery', `'${searchQuery}'`);
 
 		return this.repoService.bookRepo.find({
 			where: {
@@ -54,7 +53,7 @@ class BookResolver {
 
 	@Mutation(() => Book)
 	public async addAuthor(
-		@Args() { authorId, bookId }: AuthorAdd,
+		@Args() { bookId, authorId }: AuthorAdd,
 	): Promise<Book> {
 		const book = await this.repoService.bookRepo.findOne(bookId, {
 			relations: ['authorsRelation'],
@@ -68,18 +67,9 @@ class BookResolver {
 		return this.repoService.bookRepo.save(book);
 	}
 
-	// @Mutation(() => Book)
-	// public async deleteAuthorWithBooks(
-	// 	@Args('data') input: number,
-	// ): Promise<number> {
-	// 	return this.repoService.bookRepo.deleteAuthorWithBooks(input);
-	// }
-
 	@Mutation(() => Int)
 	public async deleteBook(@Args() { id }: IDArg): Promise<number> {
-		const deleteResult = await this.repoService.bookRepo.delete(id);
-
-		return deleteResult.affected;
+		return (await this.repoService.bookRepo.delete(id)).affected;
 	}
 
 	// @ResolveProperty(() => Author)

@@ -51,9 +51,35 @@ class AuthorResolver {
 
 	@Mutation(() => Int)
 	public async deleteAuthor(@Args() { id }: IDArg): Promise<number> {
-		const deleteResult = await this.repoService.authorRepo.delete(id);
+		return (await this.repoService.authorRepo.delete(id)).affected;
+	}
 
-		return deleteResult.affected;
+	@Mutation(() => Int, {
+		description:
+			'1. Deletes an author and all his/her books without coauthors\n2. For books with coauthors deletes the author from coauthors list\n3. Returns: deleted and updated raws count (author and books without coauthors + books in coauthors or 0)',
+	})
+	public async deleteAuthorWithBooks(@Args() id: IDArg): Promise<number> {
+		const author = await this.repoService.authorRepo.findOne(id, {
+			relations: ['booksRelation'],
+		});
+
+		if (!author) {
+			return 0;
+		}
+
+		const personalBooks = author.booksRelation.filter(
+			book => book.authorCount === 1,
+		);
+
+		await Promise.all([
+			this.repoService.bookRepo.delete(
+				personalBooks.map(book => book.id),
+			),
+			this.repoService.authorRepo.delete(id),
+		]);
+
+		// 1 - actually author
+		return author.booksRelation.length + 1;
 	}
 }
 
