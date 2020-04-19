@@ -6,6 +6,8 @@ import { BooksSearch, DEFAULT_BOOKS_SEARCH } from './input/books.search.arg';
 import { prepareLikeQueryString } from 'src/helpers/books.query.helper';
 import BookInput from './input/book.input';
 import { AuthorAdd } from './input/add.author.arg';
+import { Int } from 'type-graphql';
+import { IDArg } from './input/id.arg';
 
 @Resolver(Book)
 class BookResolver {
@@ -15,7 +17,7 @@ class BookResolver {
 		nullable: true,
 		description: 'Find a book by id.`',
 	})
-	public getBook(@Args('id') id: number): Promise<Book> {
+	public getBook(@Args() { id }: IDArg): Promise<Book> {
 		return this.repoService.bookRepo.findOne(id);
 	}
 
@@ -73,10 +75,12 @@ class BookResolver {
 	// 	return this.repoService.bookRepo.deleteAuthorWithBooks(input);
 	// }
 
-	// @Mutation(() => Book)
-	// public async deleteAuthor(@Args('data') input: number): Promise<number> {
-	// 	return this.repoService.bookRepo.deleteAuthor(input);
-	// }
+	@Mutation(() => Int)
+	public async deleteBook(@Args() { id }: IDArg): Promise<number> {
+		const deleteResult = await this.repoService.bookRepo.delete(id);
+
+		return deleteResult.affected;
+	}
 
 	// @ResolveProperty(() => Author)
 	// public async author(@Parent() parent): Promise<Author> {

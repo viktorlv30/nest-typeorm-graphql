@@ -4,6 +4,7 @@ import Author from 'src/db/models/author.entity';
 import { AuthorsSearch } from './input/authors.search.arg';
 import AuthorInput from './input/author.input';
 import { Int } from 'type-graphql';
+import { IDArg } from './input/id.arg';
 
 @Resolver(Author)
 class AuthorResolver {
@@ -13,7 +14,7 @@ class AuthorResolver {
 		nullable: true,
 		description: 'Find author by id.`',
 	})
-	public getAuthor(@Args('id') id: number): Promise<Author> {
+	public getAuthor(@Args() { id }: IDArg): Promise<Author> {
 		return this.repoService.authorRepo.findOne(id);
 	}
 
@@ -49,7 +50,7 @@ class AuthorResolver {
 	}
 
 	@Mutation(() => Int)
-	public async deleteAuthor(@Args('id') id: number): Promise<number> {
+	public async deleteAuthor(@Args() { id }: IDArg): Promise<number> {
 		const deleteResult = await this.repoService.authorRepo.delete(id);
 
 		return deleteResult.affected;
