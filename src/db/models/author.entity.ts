@@ -16,11 +16,11 @@ export default class Author {
 	id: number;
 
 	@Field()
-	@Column({ name: 'first_name' })
+	@Column({ name: 'first_name', nullable: false })
 	firstName: string;
 
 	@Field()
-	@Column({ name: 'last_name' })
+	@Column({ name: 'last_name', nullable: false })
 	lastName: string;
 
 	@Field(() => [Book], { nullable: true })

@@ -17,7 +17,7 @@ export default class Book {
 	id: number;
 
 	@Field()
-	@Column()
+	@Column({ nullable: false })
 	title: string;
 
 	@Field(() => [Author], { nullable: true })

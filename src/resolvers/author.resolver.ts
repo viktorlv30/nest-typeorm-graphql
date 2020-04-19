@@ -1,8 +1,8 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import RepoService from 'src/repo.service';
 import Author from 'src/db/models/author.entity';
 import { GetAuthorsArgs } from './args/get.authors.arg';
-// import AuthorInput from './input/author.input';
+import AuthorInput from './input/author.input';
 
 @Resolver(Author)
 class AuthorResolver {
@@ -35,15 +35,16 @@ class AuthorResolver {
 		return authors;
 	}
 
-	// @Mutation(() => Author)
-	// public async createAuthor(
-	// 	@Args('data') input: AuthorInput,
-	// ): Promise<Author> {
-	// 	const author = this.repoService.authorRepo.create({
-	// 		firstName: input.firstName,
-	// 	});
-	// 	return this.repoService.authorRepo.save(author);
-	// }
+	@Mutation(() => Author)
+	public async createAuthor(
+		@Args('author') { firstName, lastName }: AuthorInput,
+	): Promise<Author> {
+		const author = this.repoService.authorRepo.create({
+			firstName,
+			lastName,
+		});
+		return this.repoService.authorRepo.save(author);
+	}
 
 	// @Mutation(() => Author)
 	// public async deleteAuthor(@Args('data') input: number): Promise<number> {
