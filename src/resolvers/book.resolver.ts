@@ -71,11 +71,6 @@ class BookResolver {
 	public async deleteBook(@Args() { id }: IDArg): Promise<number> {
 		return (await this.repoService.bookRepo.delete(id)).affected;
 	}
-
-	// @ResolveProperty(() => Author)
-	// public async author(@Parent() parent): Promise<Author> {
-	// 	return this.repoService.authorRepo.findOne(parent.authorsId);
-	// }
 }
 
 export default BookResolver;
