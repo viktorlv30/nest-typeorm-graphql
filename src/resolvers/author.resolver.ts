@@ -1,7 +1,7 @@
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import RepoService from 'src/repo.service';
 import Author from 'src/db/models/author.entity';
-import { GetAuthorsArgs } from './args/get.authors.arg';
+import { AuthorsSearch } from './input/authors.search.arg';
 import AuthorInput from './input/author.input';
 
 @Resolver(Author)
@@ -20,7 +20,7 @@ class AuthorResolver {
 		description: `1. Without arguments returns all the authors\n2. With 'minNumberOfBooks: 3' returns the authors who has 3 and more books\n3. With 'maxNumberOfBooks: 10' returns the authors who has not more than 10 books\n4. With 'minNumberOfBooks: 3, maxNumberOfBooks: 6' returns the authors who has 3,4,5 and 6 books`,
 	})
 	public async getAuthors(
-		@Args() { minNumberOfBooks, maxNumberOfBooks }: GetAuthorsArgs,
+		@Args() { minNumberOfBooks, maxNumberOfBooks }: AuthorsSearch,
 	): Promise<Author[]> {
 		const authors = (
 			await this.repoService.authorRepo.find({

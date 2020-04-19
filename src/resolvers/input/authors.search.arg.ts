@@ -3,7 +3,7 @@ import { ArgsType, Field, Int } from 'type-graphql';
 const MAX_32_BIT_INT= Math.pow(2, 31) - 1;
 
 @ArgsType()
-export class GetAuthorsArgs {
+export class AuthorsSearch {
 	@Field(type => Int, { nullable: true, defaultValue: 0 })
 	minNumberOfBooks: number;
 

@@ -1,11 +1,11 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 
 @InputType()
 class BookInput {
-	@Field()
+	@Field(type => String)
 	readonly title: string;
 
-	@Field()
+	@Field(type => [Int])
 	readonly authorIds: number[];
 }
 

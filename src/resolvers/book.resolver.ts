@@ -1,9 +1,10 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
 import RepoService from 'src/repo.service';
 import Book from 'src/db/models/book.entity';
 import { Raw } from 'typeorm';
-import { GetBooksArgs, DEFAULT_BOOKS_SEARCH } from './args/get.books.arg';
+import { BooksSearch, DEFAULT_BOOKS_SEARCH } from './input/books.search.arg';
 import { prepareLikeQueryString } from 'src/helpers/books.query.helper';
+import BookInput from './input/book.input';
 
 @Resolver(Book)
 class BookResolver {
@@ -20,7 +21,7 @@ class BookResolver {
 	@Query(() => [Book], {
 		description: `1. Case insensitive\n2. Supports 'like' syntax\n3. Without parameter - returns all the books\n4. With 'title: Art of %' - returns all books which names start with 'Art of'`,
 	})
-	public async getBooks(@Args() { title }: GetBooksArgs): Promise<Book[]> {
+	public async getBooks(@Args() { title }: BooksSearch): Promise<Book[]> {
 		// Without arguments return all the books
 		if (title === DEFAULT_BOOKS_SEARCH) {
 			return this.repoService.bookRepo.find();
@@ -36,14 +37,17 @@ class BookResolver {
 		});
 	}
 
-	// @Mutation(() => Book)
-	// public async createBook(@Args('data') input: BookInput): Promise<Book> {
-	// 	const book = this.repoService.bookRepo.create({
-	// 		title: input.title,
-	// 		authorId: input.authorIds[0],
-	// 	});
-	// 	return this.repoService.bookRepo.save(book);
-	// }
+	@Mutation(() => Book)
+	public async createBook(
+		@Args('book') { title, authorIds }: BookInput,
+	): Promise<Book> {
+		const authors = await this.repoService.authorRepo.findByIds(authorIds);
+		const newBook = new Book();
+		newBook.title = title;
+		newBook.authorsRelation = authors;
+
+		return this.repoService.bookRepo.save(newBook);
+	}
 
 	// @Mutation(() => Book)
 	// public async addAuthor(
@@ -64,6 +68,11 @@ class BookResolver {
 	// @Mutation(() => Book)
 	// public async deleteAuthor(@Args('data') input: number): Promise<number> {
 	// 	return this.repoService.bookRepo.deleteAuthor(input);
+	// }
+
+	// @ResolveProperty(() => Author)
+	// public async author(@Parent() parent): Promise<Author> {
+	// 	return this.repoService.authorRepo.findOne(parent.authorsId);
 	// }
 }
 
