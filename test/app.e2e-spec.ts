@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import request from 'supertest';
 import { AppModule } from './../src/app.module';
 
 describe('AppController (e2e)', () => {
@@ -15,9 +15,9 @@ describe('AppController (e2e)', () => {
 		await app.init();
 	});
 
-	it('/ (GET)', done => {
+	it('/api/ (GET)', done => {
 		request(app.getHttpServer())
-			.get('/')
+			.get('/api/')
 			.expect(200)
 			.expect('Total books are 0');
 		done();

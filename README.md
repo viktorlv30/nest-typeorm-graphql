@@ -1,13 +1,14 @@
 ## Run Application
 
--   1. Go to project root folder
--   2. Exec docker-compose up -d
--   3. Open GraphQL playground on http://localhost:5000/
+1. Go to project root folder
+2. Exec docker-compose up -d
+3. Open GraphQL playground on http://localhost:5000/
 
 ## Development environment
 
--   1. Docker version 19.03.8,
--   2. docker-compose version 1.25.4
+-   Docker version 19.03.8,
+-   docker-compose version 1.25.4
+-   NodeJS version 12.14.0
 
 ## Task link
 
@@ -58,13 +59,13 @@ ts-node ./node_modules/typeorm/cli.js migration:revert
 ## Development DB
 
 ```bash
-# Run docker container manually for dev
-docker run --name mysql -v C:/Users/Viktor_Litvak/projects/nest-typeorm-graphql/mysql-data:/var/lib/mysql -p 6000:3306 -e MYSQL_USER=user -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=graphql mysql:5.7.29 --default-authentication-plugin=mysql_native_password
+# Run docker container manually for dev on Windows (on Linux you can use relative path for volume)
+docker run --name mysql -v C:/Users/User_Name/projects/nest-typeorm-graphql/mysql-data:/var/lib/mysql -p 6000:3306 -e MYSQL_USER=user -e MYSQL_PASSWORD=password -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=graphql mysql:5.7.29 --default-authentication-plugin=mysql_native_password
 
 # Stop local Mysql server in docker and remove database with all data
-docker rm -vf mysql api; rm -vrf mysql-data/*
+-
 
-# Enter into docker container
+# Enter into docker container on Windows
 winpty docker exec -ti mysql bash
 
 # Connect to the DB inside the container

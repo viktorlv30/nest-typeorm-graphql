@@ -9,6 +9,7 @@
 **/.gitignore
 
 **/build
+**/dist
 
 **/.vscode
 **/.cache*
@@ -20,3 +21,8 @@ Dockerfile
 docker-compose.yml
 
 **/test
+
+mysql-data
+mysql-test.sql
+graphql-test.gpl
+*.graphql

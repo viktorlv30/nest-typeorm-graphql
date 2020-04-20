@@ -58,19 +58,20 @@ class AuthorResolver {
 			'1. Deletes an author and all his/her books without coauthors\n2. For books with coauthors deletes the author from coauthors list\n3. Returns: deleted and updated raws count (author and books without coauthors + books in coauthors or 0)',
 	})
 	public async deleteAuthorWithBooks(@Args() id: IDArg): Promise<number> {
+		// Do not start a transaction if an author doesn't exist 		
+		const author = await this.repoService.authorRepo.findOne(id, {
+			relations: ['booksRelation'],
+		});
+
+		if (!author) {
+			return 0;
+		}
+
 		const queryRunner = this.repoService.authorRepo.manager.connection.createQueryRunner();
 		await queryRunner.connect();
 		await queryRunner.startTransaction();
 
 		try {
-			const author = await this.repoService.authorRepo.findOne(id, {
-				relations: ['booksRelation'],
-			});
-
-			if (!author) {
-				queryRunner.commitTransaction();
-				return 0;
-			}
 
 			const personalBooks = author.booksRelation.filter(
 				book => book.authorCount === 1,
@@ -84,15 +85,15 @@ class AuthorResolver {
 			]);
 
 			// 1 - actually author
-			const count = author.booksRelation.length + 1;
+			const count = author.bookCount + 1;
 			queryRunner.commitTransaction();
 
 			return count;
 		} catch (error) {
-			// since we have errors lets rollback the changes we made
+			// Since we have errors lets rollback the changes we made
 			queryRunner.rollbackTransaction();
 		} finally {
-			// we need to release a queryRunner which was manually instantiated
+			// We need to release a queryRunner which was manually instantiated
 			queryRunner.release();
 		}
 	}

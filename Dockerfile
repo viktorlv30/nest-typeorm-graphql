@@ -5,7 +5,9 @@ WORKDIR /opt/api-service
 COPY . .
 
 RUN apt-get update \
-    && npm install --only=production
+    && npm install \
+    && npm run build \
+    && npm prune --production
 
 EXPOSE 4999
 

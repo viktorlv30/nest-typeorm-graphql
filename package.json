@@ -4,7 +4,16 @@
 	"description": "Test project",
 	"author": "viktor.litvak",
 	"private": true,
-	"license": "UNLICENSED",
+	"license": "MIT",
+	"keywords": [
+		"nestjs",
+		"typeorm",
+		"many-to-many",
+		"typescript",
+		"graphql",
+		"code-first",
+		"docker-compose"
+	],
 	"scripts": {
 		"prebuild": "rimraf dist",
 		"build": "nest build",
