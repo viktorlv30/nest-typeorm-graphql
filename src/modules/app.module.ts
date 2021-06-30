@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { AppService } from '../services/app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import RepoModule from './repo.module';
 import { GraphQLModule } from '@nestjs/graphql';
-import AuthorResolver from './resolvers/author.resolver';
-import BookResolver from './resolvers/book.resolver';
+import AuthorResolver from '../resolvers/author.resolver';
+import BookResolver from '../resolvers/book.resolver';
+import { AppController } from '../controllers/app.controller';
+import RepoModule from './repo.module';
 
 const graphQLImports = [AuthorResolver, BookResolver];
 

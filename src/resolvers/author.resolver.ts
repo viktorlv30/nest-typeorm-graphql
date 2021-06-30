@@ -1,6 +1,6 @@
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
-import RepoService from 'src/repo.service';
-import Author from 'src/db/models/author.entity';
+import RepoService from '../services/repo.service';
+import Author from '../db/models/author.entity';
 import { AuthorsSearch } from './input/authors.search.arg';
 import AuthorInput from './input/author.input';
 import { Int } from 'type-graphql';
@@ -58,7 +58,7 @@ class AuthorResolver {
 			'1. Deletes an author and all his/her books without coauthors\n2. For books with coauthors deletes the author from coauthors list\n3. Returns: deleted and updated raws count (author and books without coauthors + books in coauthors or 0)',
 	})
 	public async deleteAuthorWithBooks(@Args() id: IDArg): Promise<number> {
-		// Do not start a transaction if an author doesn't exist 		
+		// Do not start a transaction if an author doesn't exist
 		const author = await this.repoService.authorRepo.findOne(id, {
 			relations: ['booksRelation'],
 		});
@@ -72,7 +72,6 @@ class AuthorResolver {
 		await queryRunner.startTransaction();
 
 		try {
-
 			const personalBooks = author.booksRelation.filter(
 				book => book.authorCount === 1,
 			);
