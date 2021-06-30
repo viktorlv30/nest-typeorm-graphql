@@ -81,9 +81,9 @@ mysql -h localhost -u user -ppassword -e "show databases"
 
 ## Requirements
 
-# Простой каталог книг
+# A simple catalog of books
 
-Стек технологий:
+Stack of technologies:
 
 -   Node.js
 -   TypeScript
@@ -92,28 +92,26 @@ mysql -h localhost -u user -ppassword -e "show databases"
 -   MySQL
 -   GraphQL with code first approach
 
-GraphQL схему для каталога смотри в файле schema.graphql.
+GraphQL diagram for the directory see the file schema.graphql.
 
-Решение предоставить как ссылку на GitHub репозиторий.
+The repository must have a docker-compose.yml file which:
 
-В репозитории обязательно должен быть docker-compose.yml файл который:
+-   Gives access to the node.js application via port 5000.
+-   Gives access to mysql through port 6000.
+-   Saves mysql data in volume ./mysql-data.
 
--   Дает доступ к node.js приложению через порт 5000.
--   Дает доступ к mysql через порт 6000.
--   Сохраняет mysql данные в volume ./mysql-data.
-
-Приложение должно разворачиваться на локалке двумя командами:
+The application must be deployed on the locale with two commands:
 
 ```bash
 npm install
 docker-compose up
 ```
 
-После docker-compose up в браузере по адресу http://localhost:5000/ должен быть доступен работоспособный GraphQL Playground.
+After docker-compose up in the Browser by http://localhost:5000/ a working GraphQL Playground must be available.
 
-После docker-compose down данные в базе не должны пропасть.
+After docker-compose down the data in the database should not disappear.
 
-Приветствуются (но не обязательны) тесты, ограничение сложности GraphQL запросов (query complexity) и решение проблемы N+1 SQL запроса.
+Tests, query complexity, and a solution to the N + 1 SQL query problem are welcome (but not required).
 
 ## GraphQL Schema
 
@@ -124,18 +122,18 @@ schema {
 }
 
 type Query {
-	getAuthor(id: ID!): Author # возвращает null если ничего не нашло
-	getBook(id: ID!): Book # возвращает null если ничего не нашло
-	# getAuthors() возвращает всех авторов
-	# getAuthors(minNumberOfBooks: 3) возвращает авторов у которых 3 и более книг
-	# getAuthors(maxNumberOfBooks: 10) возвращает авторов у которых не больше 10 книг
-	# getAuthors(minNumberOfBooks: 3, maxNumberOfBooks: 6) возвращает авторов у которых 3, 4, 5 или 6 книг
+	getAuthor(id: ID!): Author # returns null if nothing is found
+	getBook(id: ID!): Book # returns null if nothing is found
+	# getAuthors() returns all authors
+	# getAuthors(minNumberOfBooks: 3) returns authors who have 3 or more books
+	# getAuthors(maxNumberOfBooks: 10) returns authors who have no more than 10 books
+	# getAuthors(minNumberOfBooks: 3, maxNumberOfBooks: 6) returns authors who have 3, 4, 5 or 6 books
 	getAuthors(minNumberOfBooks: Int, maxNumberOfBooks: Int): [Author!]!
 
-	# поиск нечувствительный к регистру
-	# должен поддерживать like синтаксис
-	# getBooks() возвращает все книги
-	# getBooks(title: "Art of %") возвращает книги начинающиеся с 'Art of'
+	# search case insensitive
+	# must support like syntax
+	# getBooks() returns all books
+	# getBooks(title: "Art of %") returns books starting with 'Art of'
 	getBooks(title: String): [Book!]!
 }
 
@@ -144,13 +142,13 @@ type Mutation {
 	createBook(book: BookInput!): Book!
 	addAuthor(bookId: ID!, authorId: ID!): Book!
 
-	deleteAuthor(id: ID!): Int! # возвращает количество удаленных записей (0 или 1)
-	# удаляет автора и все его книги без соавторов
-	# для книг в соавторстве удаляет автора из списка авторов
-	# возвращает количество удаленных и измененных записей (автор+книги без соавторов+книги в соавторстве или 0)
+	deleteAuthor(id: ID!): Int! # returns the number of deleted records (0 or 1)
+	# removes the author and all his books without co-authors
+	# for co-authored books removes the author from the list of authors
+	# returns the number of deleted and modified entries (author + books without co-authors + books co-authored or 0)
 	deleteAuthorWithBooks(id: ID!): Int!
 
-	deleteBook(id: ID!): Int! # возвращает количество удаленных записей (0 или 1)
+	deleteBook(id: ID!): Int! # returns the number of deleted records (0 or 1)
 }
 
 type Author {

@@ -1,9 +1,9 @@
 import { Args, Query, Resolver, Mutation } from '@nestjs/graphql';
-import RepoService from 'src/repo.service';
-import Book from 'src/db/models/book.entity';
+import RepoService from '../services/repo.service';
+import Book from '../db/models/book.entity';
 import { Raw } from 'typeorm';
 import { BooksSearch, DEFAULT_BOOKS_SEARCH } from './input/books.search.arg';
-import { prepareLikeQueryString } from 'src/helpers/books.query.helper';
+import { prepareLikeQueryString } from '../helpers/books.query.helper';
 import BookInput from './input/book.input';
 import { AuthorAdd } from './input/add.author.arg';
 import { Int } from 'type-graphql';

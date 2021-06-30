@@ -1,6 +1,6 @@
 import { ArgsType, Field, Int } from 'type-graphql';
 
-const MAX_32_BIT_INT= Math.pow(2, 31) - 1;
+const MAX_32_BIT_INT = Math.pow(2, 31) - 1;
 
 @ArgsType()
 export class AuthorsSearch {
